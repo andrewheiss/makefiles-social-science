@@ -1,4 +1,3 @@
-makefiles-social-science
-========================
+# Makefiles for social scientists
 
-Makefiles for social scientists
+Short example of using makefiles with R and Stata
