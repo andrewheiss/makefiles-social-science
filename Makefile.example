@@ -1,0 +1,32 @@
+.PHONY: all analysis figures
+
+all: analysis figures
+analysis: Output/table_1.doc
+figures: Output/plot1.pdf Output/plot2.pdf Output/plot3.pdf
+
+Data/data.dta: get_data.do
+	@-mkdir Data 2>/dev/null || true
+	stata-se -b get_data.do
+	rm get_data.log
+
+Output/table_1.doc: model.do Data/data.dta
+	@-mkdir Output 2>/dev/null || true
+	stata-se -b model.do
+	rm model.log
+	rm Output/table_1.txt
+
+
+# Using multiple outputs is really tricky
+# See http://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
+
+# This is the naive way, but it doesn't work with make in parallel or with phony targets.
+# But that's probably okay, since the real way to make this work is complicated.
+Output/plot1.pdf Output/plot2.pdf Output/plot3.pdf: figures.R Data/data.dta
+	@-mkdir Output 2>/dev/null || true
+	Rscript figures.R
+
+# Alternative: make the other inputs depend on the first output.
+# But this doesn't work right if you delete the other outputs
+# plot1.pdf: figures.R
+# 	Rscript figures.R
+# plot2.pdf plot3.pdf: plot1.pdf
