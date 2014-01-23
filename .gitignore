@@ -1,3 +1,5 @@
 Output/*
 Data/*
 *.log
+.RData
+.Rhistory
