@@ -7,11 +7,13 @@ figures: Output/plot1.pdf Output/plot2.pdf Output/plot3.pdf
 Data/data.dta: get_data.do
 	@-mkdir Data 2>/dev/null || true
 	stata-se -b get_data.do
+	# "C:\Program Files\Stata13\StataSE" /e get_data.do
 	rm get_data.log
 
 Output/table_1.doc: model.do Data/data.dta
 	@-mkdir Output 2>/dev/null || true
 	stata-se -b model.do
+	# "C:\Program Files\Stata13\StataSE" /e get_data.do
 	rm model.log
 	rm Output/table_1.txt
 
@@ -24,6 +26,7 @@ Output/table_1.doc: model.do Data/data.dta
 Output/plot1.pdf Output/plot2.pdf Output/plot3.pdf: figures.R Data/data.dta
 	@-mkdir Output 2>/dev/null || true
 	Rscript figures.R
+	# "C:\Program Files\R\R-3.0.2\bin\x64\Rscript.exe" figures.R
 
 # Alternative: make the other inputs depend on the first output.
 # But this doesn't work right if you delete the other outputs
